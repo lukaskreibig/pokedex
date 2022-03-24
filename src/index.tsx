@@ -4,7 +4,7 @@ import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https://dex-server.herokuapp.com/",
+  uri: "https://graphql-pokeapi.graphcdn.app/",
   cache: new InMemoryCache(),
 });
 
