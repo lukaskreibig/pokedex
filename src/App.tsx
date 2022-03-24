@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import { gql, useQuery } from '@apollo/client';
 
 function App() {
@@ -33,13 +33,17 @@ function App() {
     {console.log(console.log(data.pokemons.results))}
 
       {
-       data.pokemons.results.map((x:any) => { 
+       data.pokemons.results.map((x:any, index:number) => { 
          return (
-         <li className="gridchild">{x.name}</li>
+         <li className="gridchild" key={index}>
+          <img src={x.image} alt="Pokemon" />
+          {x.name}
+         
+         </li>
+
        )})
      }
-  </ul>
-  
+  </ul>  
   }
 
   
