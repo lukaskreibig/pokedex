@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import { gql, useQuery } from '@apollo/client';
 
+
+
 function App() {
+
+const [sort, setSort] = useState<boolean>(false)
+
+console.log(sort)
 
   const GET_POKEMON = gql`
   query pokemons($limit: Int, $offset: Int) {
@@ -39,16 +45,18 @@ function App() {
 
     <li className="searchbar"> Search</li>
     <li className="searchbar"> Filter</li>
-    <li className="searchbar"> Sort</li>
+    <li className={sort ? "sortactive" : "searchbar"} onClick={() => setSort(!sort)}> {sort ? (<div> Sort by Name <br/> Sort by Type </div>) : "Sort"} </li>
     <li className="searchbar"> Favourites</li>
+
+
 
       {
        data.pokemons.results.map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
            <div className="boxcontent">
+            <div className="pokemonname">{x.name}</div>
             <img src={x.artwork} alt="Pokemon" />
-            {x.name}
             </div>
          </li>
          
