@@ -15,6 +15,8 @@ function App() {
       status
       message
       results {
+        id
+        artwork
         url
         name
         image
@@ -28,23 +30,34 @@ function App() {
 
   return (
     <div className="app">
-  {loading ? 'Loading...' : 
+  {loading ? 'Loading...' : (
+<>
+  <header> Pokédex </header>
+
   <ul className="appgrid">
     {console.log(console.log(data.pokemons.results))}
+
+    <li className="searchbar"> Search</li>
+    <li className="searchbar"> Filter</li>
+    <li className="searchbar"> Sort</li>
+    <li className="searchbar"> Favourites</li>
 
       {
        data.pokemons.results.map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
-          <img src={x.image} alt="Pokemon" />
-          {x.name}
-         
+           <div className="boxcontent">
+            <img src={x.artwork} alt="Pokemon" />
+            {x.name}
+            </div>
          </li>
+         
 
        )})
      }
   </ul>  
-  }
+  </>
+  )}
 
   
 
