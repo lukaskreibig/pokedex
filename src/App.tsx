@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { gql, useQuery } from '@apollo/client';
+import Search from './components/Search';
 
 
 
@@ -31,8 +32,11 @@ console.log(sort)
   }
 `;
 
-  const { loading, error, data } = useQuery(GET_POKEMON);
+  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 1000}} );
   console.log(error ? (console.log(`Error! ${error.message}`)) : null)
+
+  let newPokemon:any = null
+  if (data) {newPokemon = [...data.pokemons.results]}
 
   return (
     <div className="app">
@@ -41,17 +45,17 @@ console.log(sort)
   <header> Pokédex </header>
 
   <ul className="appgrid">
-    {console.log(console.log(data.pokemons.results))}
 
-    <li className="searchbar"> Search</li>
+    <Search />
+
+    {/* {console.log(data.pokemons.results.sort((a, b) => a.name.localeCompare(b.name)))} */}
+    {/* sort((a:any,b:any) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) */}
+
     <li className="searchbar"> Filter</li>
     <li className={sort ? "sortactive" : "searchbar"} onClick={() => setSort(!sort)}> {sort ? (<div> Sort by Name <br/> Sort by Type </div>) : "Sort"} </li>
     <li className="searchbar"> Favourites</li>
-
-
-
       {
-       data.pokemons.results.map((x:any, index:number) => { 
+       newPokemon.sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name)).map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
            <div className="boxcontent">
