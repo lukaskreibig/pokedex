@@ -9,7 +9,7 @@ type Props = {
     // placeholder: string;
   };
 
-const Search:React.FC<Props> = () => {
+const Search = () => {
 
 const [search, setSearch] = useState<boolean>(false)
 const [searchInput, setSearchInput] = useState<string>("")
@@ -38,16 +38,17 @@ query pokemon($name: String!) {
 }
 `
   
-    const [searchNow, { loading, data, error }] = useLazyQuery(SEARCH_POKEMON, {
-        variables: {
-          name: searchInput.toLowerCase(),
-        },
-      });
+   
+        const [searchNow, { loading, data, error }] = useLazyQuery(SEARCH_POKEMON, {
+            variables: {
+            name: searchInput.toLowerCase(),
+            },
+        });
 
-    console.log(loading)
-    console.log(data)
-    console.log(error)
-    console.log(searchInput)
+    // console.log(loading)
+    // console.log(data)
+    // console.log(error)
+    // console.log(searchInput)
 
     const activateSearch = (e:React.ChangeEvent<HTMLInputElement>): void => {
         setSearchInput(e.target.value);

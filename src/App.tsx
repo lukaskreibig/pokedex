@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { gql, useQuery } from '@apollo/client';
 import Search from './components/Search';
+import heart from './assets/heart.png'
+import noheart from './assets/noheart.png'
 
 
 
 function App() {
 
 const [sort, setSort] = useState<boolean>(false)
-
-console.log(sort)
+const [liked, setLiked] = useState<boolean>(false)
+const [storage, setStorage] = useState<any>([])
 
   const GET_POKEMON = gql`
   query pokemons($limit: Int, $offset: Int) {
@@ -32,8 +34,31 @@ console.log(sort)
   }
 `;
 
-  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 1000}} );
-  console.log(error ? (console.log(`Error! ${error.message}`)) : null)
+  useEffect(() => {
+    const storage = JSON.parse(localStorage.getItem('storage') || "");
+    if (storage) {
+    setStorage(storage);
+    console.log("Got LocalStorage", storage)
+    }
+  }, []);
+
+  useEffect(():void => {
+      localStorage.setItem('storage', JSON.stringify(storage));
+      console.log("Added REAL LocalStorage", localStorage)
+  }, [storage]);
+
+
+  const triggerLike = (x:any):void => {
+    console.log("Before Adding", storage)
+    setStorage([...storage, x])
+    console.log("Added to Storage", storage)
+
+  }
+
+
+
+  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 20}} );
+  // (error ? (console.log(`Error! ${error.message}`)) : null)
 
   let newPokemon:any = null
   if (data) {newPokemon = [...data.pokemons.results]}
@@ -61,8 +86,10 @@ console.log(sort)
            <div className="boxcontent">
             <div className="pokemonname">{x.name}</div>
             <img src={x.artwork} alt="Pokemon" />
+            <img src={noheart} className={"like"} onClick={() => {triggerLike(x)}} alt="noHeart"/>
             </div>
          </li>
+         
          
 
        )})
