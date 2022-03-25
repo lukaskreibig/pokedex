@@ -10,7 +10,7 @@ import noheart from './assets/noheart.png'
 function App() {
 
 const [sort, setSort] = useState<boolean>(false)
-const [liked, setLiked] = useState<boolean>(false)
+const [favourite, setFavourite] = useState<boolean>(false)
 const [storage, setStorage] = useState<any>([])
 
   const GET_POKEMON = gql`
@@ -64,6 +64,12 @@ const [storage, setStorage] = useState<any>([])
   let newPokemon:any = null
   if (data) {newPokemon = [...data.pokemons.results]}
 
+  let placeholder
+  favourite ? placeholder = storage : placeholder = newPokemon
+
+  console.log("Storage", storage)
+  console.log("newPokemon", newPokemon)
+
   return (
     <div className="app">
   {loading ? 'Loading...' : (
@@ -79,9 +85,9 @@ const [storage, setStorage] = useState<any>([])
 
     <li className="searchbar"> Filter</li>
     <li className={sort ? "sortactive" : "searchbar"} onClick={() => setSort(!sort)}> {sort ? (<div> Sort by Name <br/> Sort by Type </div>) : "Sort"} </li>
-    <li className="searchbar"> Favourites</li>
+    <li className="searchbar" onClick={() => setFavourite(!favourite)}> Favourites</li>
       {
-       newPokemon.sort((a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name)).map((x:any, index:number) => { 
+        placeholder.sort( (a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name)).map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
            <div className="boxcontent">
