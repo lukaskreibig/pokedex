@@ -48,14 +48,15 @@ const [storage, setStorage] = useState<any>([])
   }, [storage]);
 
 
-  const triggerLike = (x:any):void => {
+  const triggerLike = (x:any, heart?:any):void => {
+    if (!heart)  {
     console.log("Before Adding", storage)
     setStorage([...storage, x])
     console.log("Added to Storage", storage)
-
+    } else {
+    setStorage(storage.filter((obj: { id: any; }) => obj.id !== x.id))
+    }
   }
-
-
 
   const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 20}} );
   // (error ? (console.log(`Error! ${error.message}`)) : null)
@@ -86,7 +87,12 @@ const [storage, setStorage] = useState<any>([])
            <div className="boxcontent">
             <div className="pokemonname">{x.name}</div>
             <img src={x.artwork} alt="Pokemon" />
-            <img src={noheart} className={"like"} onClick={() => {triggerLike(x)}} alt="noHeart"/>
+            {console.log("Compare", storage.filter((obj: { id: any; }) => obj.id === x.id))}
+            {(storage.filter((obj: { id: any; }) => obj.id === x.id)).length ? 
+            <img src={heart} className={"like"} onClick={() => {triggerLike(x, heart)}} alt="Like"/>
+            : 
+            <img src={noheart} className={"like"} onClick={() => {triggerLike(x)}} alt="No Like"/>
+            }
             </div>
          </li>
          
