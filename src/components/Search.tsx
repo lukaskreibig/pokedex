@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.scss';
 import { gql, useLazyQuery } from '@apollo/client';
 
 type Props = {
-    // searchInput: any;
+    // handleSearch: any;
     // setState: (val: string) => void;
-    // handleOnSubmit: () => void;
+    handleSearch: (results:any) => any;
     // placeholder: string;
   };
 
-const Search = () => {
+const Search:React.FC<Props> = (Props) => {
 
 const [search, setSearch] = useState<boolean>(false)
 const [searchInput, setSearchInput] = useState<string>("")
@@ -45,31 +45,40 @@ query pokemon($name: String!) {
             },
         });
 
-    // console.log(loading)
-    // console.log(data)
-    // console.log(error)
-    // console.log(searchInput)
+       
 
     const activateSearch = (e:React.ChangeEvent<HTMLInputElement>): void => {
         setSearchInput(e.target.value);
         searchNow();
       };
 
+    if(data){Props.handleSearch([data])}
+
+
+
+    console.log(loading)
+    console.log("Data", data)
+    console.log(error)
+    console.log(searchInput)
+
+
+
 
   return (
 
-    <li className="searchbar" onClick={() => setSearch(true)}> {search ? 
+    <li className={"searchbar"} onClick={() => setSearch(true)}> {
     (
       <form onSubmit={((e:React.FormEvent<HTMLFormElement>) => {e.preventDefault()})} >
         <label>
           <input
             name="search"            
             type="text"
+            placeholder="Search"
             onChange={(e) => {activateSearch(e)}}
             />
         </label>
         </form>
-    ) : "Search"}</li>
+    )}</li>
 
     )}
 

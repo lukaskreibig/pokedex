@@ -12,6 +12,8 @@ function App() {
 const [sort, setSort] = useState<boolean>(false)
 const [favourite, setFavourite] = useState<boolean>(false)
 const [storage, setStorage] = useState<any>([])
+const [search, setSearch] = useState<boolean>(false)
+const [searchResults, setSearchResults] = useState<any>([])
 
   const GET_POKEMON = gql`
   query pokemons($limit: Int, $offset: Int) {
@@ -38,21 +40,17 @@ const [storage, setStorage] = useState<any>([])
     const storage = JSON.parse(localStorage.getItem('storage') || "");
     if (storage) {
     setStorage(storage);
-    console.log("Got LocalStorage", storage)
     }
   }, []);
 
   useEffect(():void => {
       localStorage.setItem('storage', JSON.stringify(storage));
-      console.log("Added REAL LocalStorage", localStorage)
   }, [storage]);
 
 
   const triggerLike = (x:any, heart?:any):void => {
     if (!heart)  {
-    console.log("Before Adding", storage)
     setStorage([...storage, x])
-    console.log("Added to Storage", storage)
     } else {
     setStorage(storage.filter((obj: { id: any; }) => obj.id !== x.id))
     }
@@ -65,10 +63,15 @@ const [storage, setStorage] = useState<any>([])
   if (data) {newPokemon = [...data.pokemons.results]}
 
   let placeholder
-  favourite ? placeholder = storage : placeholder = newPokemon
+  favourite ? placeholder = storage : search ? placeholder = searchResults : placeholder = newPokemon
+  
 
-  console.log("Storage", storage)
-  console.log("newPokemon", newPokemon)
+  let handleSearch = (results:any) => {
+    setSearch(!search)
+    setSearchResults(results)
+  }
+  
+  console.log(placeholder)
 
   return (
     <div className="app">
@@ -78,13 +81,10 @@ const [storage, setStorage] = useState<any>([])
 
   <ul className="appgrid">
 
-    <Search />
-
-    {/* {console.log(data.pokemons.results.sort((a, b) => a.name.localeCompare(b.name)))} */}
-    {/* sort((a:any,b:any) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) */}
+    <Search handleSearch={handleSearch} />
 
     <li className="searchbar"> Filter</li>
-    <li className={sort ? "sortactive" : "searchbar"} onClick={() => setSort(!sort)}> {sort ? (<div> Sort by Name <br/> Sort by Type </div>) : "Sort"} </li>
+    <li className={"searchbar"} onClick={() => setSort(!sort)}> Sort from A-Z </li>
     <li className="searchbar" onClick={() => setFavourite(!favourite)}> Favourites</li>
       {
         placeholder.sort( (a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name)).map((x:any, index:number) => { 
@@ -93,7 +93,6 @@ const [storage, setStorage] = useState<any>([])
            <div className="boxcontent">
             <div className="pokemonname">{x.name}</div>
             <img src={x.artwork} alt="Pokemon" />
-            {console.log("Compare", storage.filter((obj: { id: any; }) => obj.id === x.id))}
             {(storage.filter((obj: { id: any; }) => obj.id === x.id)).length ? 
             <img src={heart} className={"like"} onClick={() => {triggerLike(x, heart)}} alt="Like"/>
             : 
