@@ -14,6 +14,7 @@ const [favourite, setFavourite] = useState<boolean>(false)
 const [storage, setStorage] = useState<any>([])
 const [search, setSearch] = useState<boolean>(false)
 const [searchResults, setSearchResults] = useState<any>([])
+const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
 
   const GET_POKEMON = gql`
   query pokemons($limit: Int, $offset: Int) {
@@ -63,19 +64,30 @@ const [searchResults, setSearchResults] = useState<any>([])
   if (data) {newPokemon = [...data.pokemons.results]}
 
   let placeholder
-  favourite ? placeholder = storage : search ? placeholder = searchResults : placeholder = newPokemon
-  
+  favourite ? placeholder = storage : search && searchResults ? placeholder = searchResults : placeholder = newPokemon
+
 
   let handleSearch = (results:any):void => {
-    setSearch(!search)
-    setSearchResults(results)
+    if(results[0].id !== null){
+      setSearch(true);
+      setSearchResults(results);
+    } else {
+      setSearchResults([{
+        "name": "Nope. No Pokemon Found.",
+        "sprites": {"front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png"},
+        "notacard" : true
+      }]);
+      setSearch(true)
+    }
+    console.log("Passing up results", results)
   }
+
   
-  console.log(placeholder)
+  console.log("Placeholder", placeholder)
 
   return (
     <div className="app">
-  {loading ? 'Loading...' : (
+  {loading || loadingSearch ? 'Loading...' : (
 <>
   <header> Pokédex </header>
 
@@ -88,18 +100,19 @@ const [searchResults, setSearchResults] = useState<any>([])
     <li className={"searchbar"} id={favourite ? "searchbar-clicked" : undefined} onClick={() => setFavourite(!favourite)}> Favourites</li>
       {
         placeholder
-        .sort((a: { name: string; }, b: { name: string; }) => sort ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name))
+        // .sort((a: { name: string; }, b: { name: string; }) => sort ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name))
 
         .map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
            <div className="boxcontent">
             <div className="pokemonname">{x.name}</div>
-            <img src={x.artwork} alt="Pokemon" />
+            <img src={(x.artwork ? x.artwork : x.sprites.front_default)} alt="Pokemon" />
             {(storage.filter((obj: { id: any; }) => obj.id === x.id)).length ? 
             <img src={heart} className={"like"} onClick={() => {triggerLike(x, heart)}} alt="Like"/>
-            : 
+            : !x.notacard ?
             <img src={noheart} className={"like"} onClick={() => {triggerLike(x)}} alt="No Like"/>
+            : null
             }
             </div>
          </li>

@@ -13,6 +13,7 @@ const Search:React.FC<Props> = (Props) => {
 
 const [search, setSearch] = useState<boolean>(false)
 const [searchInput, setSearchInput] = useState<string>("")
+const [searchResults, setSearchResults] = useState<any>([])
 
 console.log(searchInput)
 
@@ -21,45 +22,31 @@ query pokemon($name: String!) {
   pokemon(name: $name) {
     id
     name
-    sprites {
-      front_default
-    }
-    moves {
-      move {
-        name
-      }
-    }
-    types {
-      type {
-        name
-      }
-    }
+    sprites { front_default }
   }
 }
 `
-  
    
         const [searchNow, { loading, data, error }] = useLazyQuery(SEARCH_POKEMON, {
             variables: {
-            name: searchInput.toLowerCase(),
+            name: searchInput
             },
         });
 
        
 
-    const activateSearch = (e:React.ChangeEvent<HTMLInputElement>): void => {
-        setSearchInput(e.target.value);
-        searchNow();
+    const activateSearch = (e:any): void => {
+        e.preventDefault()
+        searchNow().then(data => {
+              Props.handleSearch([data.data.pokemon])
+        })
       };
 
-    if(data){Props.handleSearch([data])}
 
-
-
-    console.log(loading)
+    console.log("Loading", loading)
     console.log("Data", data)
-    console.log(error)
-    console.log(searchInput)
+    console.log("Error", error)
+    console.log("SearchInput", searchInput)
 
 
 
@@ -68,13 +55,13 @@ query pokemon($name: String!) {
 
     <li className={"searchbar"} id={search ? "searchbar-clicked" : undefined} onClick={() => setSearch(true)}> {
     (
-      <form onSubmit={((e:React.FormEvent<HTMLFormElement>) => {e.preventDefault()})} >
+      <form onSubmit={(e) => activateSearch(e)} >
         <label>
           <input
             name="search"            
             type="text"
             placeholder="Search"
-            onChange={(e) => {activateSearch(e)}}
+            onChange={(e) => {setSearchInput(e.target.value)}}
             />
         </label>
         </form>
