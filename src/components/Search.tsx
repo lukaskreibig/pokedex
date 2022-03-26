@@ -66,7 +66,7 @@ query pokemon($name: String!) {
 
   return (
 
-    <li className={"searchbar"} onClick={() => setSearch(true)}> {
+    <li className={"searchbar"} id={search ? "searchbar-clicked" : undefined} onClick={() => setSearch(true)}> {
     (
       <form onSubmit={((e:React.FormEvent<HTMLFormElement>) => {e.preventDefault()})} >
         <label>

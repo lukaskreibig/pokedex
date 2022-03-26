@@ -36,7 +36,7 @@ const [searchResults, setSearchResults] = useState<any>([])
   }
 `;
 
-  useEffect(() => {
+  useEffect(():void => {
     const storage = JSON.parse(localStorage.getItem('storage') || "");
     if (storage) {
     setStorage(storage);
@@ -66,7 +66,7 @@ const [searchResults, setSearchResults] = useState<any>([])
   favourite ? placeholder = storage : search ? placeholder = searchResults : placeholder = newPokemon
   
 
-  let handleSearch = (results:any) => {
+  let handleSearch = (results:any):void => {
     setSearch(!search)
     setSearchResults(results)
   }
@@ -83,11 +83,14 @@ const [searchResults, setSearchResults] = useState<any>([])
 
     <Search handleSearch={handleSearch} />
 
-    <li className="searchbar"> Filter</li>
-    <li className={"searchbar"} onClick={() => setSort(!sort)}> Sort from A-Z </li>
-    <li className="searchbar" onClick={() => setFavourite(!favourite)}> Favourites</li>
+    <li className={"searchbar"} id={null ?? "searchbar-clicked"}> Filter</li>
+    <li className={"searchbar"} onClick={() => setSort(!sort)}> {sort ? "Sort from Z-A" : "Sort from A-Z"} </li>
+    <li className={"searchbar"} id={favourite ? "searchbar-clicked" : undefined} onClick={() => setFavourite(!favourite)}> Favourites</li>
       {
-        placeholder.sort( (a: { name: string; }, b: { name: string; }) => a.name.localeCompare(b.name)).map((x:any, index:number) => { 
+        placeholder
+        .sort((a: { name: string; }, b: { name: string; }) => sort ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name))
+
+        .map((x:any, index:number) => { 
          return (
          <li className="gridchild" key={index}>
            <div className="boxcontent">
