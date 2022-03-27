@@ -3,10 +3,7 @@ import '../App.scss';
 import { gql, useLazyQuery } from '@apollo/client';
 
 type Props = {
-    // handleSearch: any;
-    // setState: (val: string) => void;
     handleSearch: (results:any) => any;
-    // placeholder: string;
   };
 
 const Search:React.FC<Props> = (Props) => {
