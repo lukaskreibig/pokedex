@@ -12,7 +12,6 @@ const [search, setSearch] = useState<boolean>(false)
 const [searchInput, setSearchInput] = useState<string>("")
 const [searchResults, setSearchResults] = useState<any>([])
 
-console.log(searchInput)
 
 const SEARCH_POKEMON = gql`
 query pokemon($name: String!) {
@@ -38,12 +37,6 @@ query pokemon($name: String!) {
               Props.handleSearch([data.data.pokemon])
         })
       };
-
-
-    console.log("Loading", loading)
-    console.log("Data", data)
-    console.log("Error", error)
-    console.log("SearchInput", searchInput)
 
 
 

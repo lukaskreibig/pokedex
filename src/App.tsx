@@ -116,21 +116,20 @@ const [generation] = useState<any>([
       }]);
       setSearch(true)
     }
-    console.log("Passing up results", results)
   }
-console.log("Placeholder", placeholder)
-console.log("selected", selected)
 
-  const onChange = (id:any) => {
-    let find = selected.indexOf(id)
+  const onChange = (range:any) => {
+    let find = selected.indexOf(range)
 
     if(find > -1) {
       selected.splice(find, 1)
     } else {
-      selected.push(id)
+      selected.push(range)
     }
     setSelected(selected)
+    console.log(selected)
   }
+
 
   
   let finalarray:any = []
@@ -177,7 +176,7 @@ console.log("selected", selected)
           return (
           <label key={item.id}>{item.id}
           <input type="checkbox" id="check"
-            onChange={() => onChange(item.id)}
+            onChange={() => onChange(item.range)}
             selected={selected.includes(item.id)}
           ></input>
           
