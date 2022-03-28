@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import {
-  BrowserRouter as Router,
   Route,
   BrowserRouter,
   Routes

@@ -77,10 +77,9 @@ const App:React.FC<Props> = (Props) => {
 
   useEffect((): void => {
     dataJuggle()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [favourite]);
+    }, [favourite]);
 
-  const triggerLike = (y: any, heart?: any): void => {
+  const triggerLike = (y: IStorage, heart?: string): void => {
     if (!heart) {
       setStorage([...storage, y]);
     } else {
@@ -88,6 +87,7 @@ const App:React.FC<Props> = (Props) => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let placeholder: any;
   favourite || Props.favourite
     ? (placeholder = storage)
@@ -95,7 +95,7 @@ const App:React.FC<Props> = (Props) => {
     ? (placeholder = searchResults)
     : (placeholder = newPokemon);
 
-  let handleSearch = (results:IStorage[]): void => {
+  const handleSearch = (results:IStorage[]): void => {
     if (results[0].id) {
       setSearchResults(results);
     } else {
@@ -123,7 +123,7 @@ const App:React.FC<Props> = (Props) => {
             poke.id < generationList[filter - 1].range.to
         )
       );
-      let newresults = results.flat(2);
+      const newresults = results.flat(2);
       results = newresults;
       setFilterData(results);
       console.log("Results", results)
@@ -134,7 +134,7 @@ const App:React.FC<Props> = (Props) => {
   };
 
   const onChange = (id:IGen["id"]) => {
-    let find = selected.indexOf(id)
+    const find = selected.indexOf(id)
 
     if(find > -1) {
       selected.splice(find, 1)
@@ -162,18 +162,18 @@ const App:React.FC<Props> = (Props) => {
             <Favourite handleFavourite={() => handleFavourite()} favourite={favourite} />
 
             {(filter ? filterData : placeholder)
-              .sort((a:IGen, b:IGen) =>
+              .sort((a:IStorage, b:IStorage) =>
                 sort
                   ? b.name.localeCompare(a.name)
                   : a.name.localeCompare(b.name)
               )
-              .map((x: IGen, index: number) => {
+              .map((x: IStorage, index: number) => {
                 return (
                   <li className="gridchild" key={index}>
                     <div className="boxcontent">
                       <div className="pokemonname">{x.name}</div>
                       <img
-                        src={x.artwork ? x.artwork : x.sprites.front_default}
+                        src={x.artwork ? x.artwork : x.sprites?.front_default}
                         alt="Pokemon"
                       />
                       {storage.filter((obj) => obj.id === x.id)

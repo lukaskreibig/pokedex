@@ -1,3 +1,4 @@
+import React from 'react';
 import '../App.scss';
 
 type Props = {
@@ -5,6 +6,7 @@ type Props = {
     sort: boolean;
   };
 
+// eslint-disable-next-line react/prop-types
 const Favourite: React.FC<Props> = ({handleSort, sort}) => {
     return (
         <li className={"searchbar"} onClick={() => handleSort()}>

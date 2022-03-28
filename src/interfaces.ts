@@ -6,13 +6,13 @@
         url?: URL;
         __typename?: string;
         sprites?: {
-        front_default?: URL | string
-        };
+        front_default?: string | URL | undefined;
+    } | undefined;
         notacard?: boolean;
     }
 
     export interface IGen {
         id: number;
         range: {from: number, to: number}
-        [x: string]: any;
+        [x: string]: unknown;
     }
