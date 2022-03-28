@@ -2,7 +2,7 @@ import '../App.scss';
 
 type Props = {
     handleFavourite: () => void;
-    favourite: boolean;
+    favourite?: boolean;
   };
 
 const Favourite: React.FC<Props> = ({handleFavourite, favourite}) => {

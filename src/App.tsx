@@ -8,8 +8,13 @@ import Generation from "./components/Generation";
 import Favourite from "./components/Favourite";
 import { IGen, IStorage } from "./interfaces";
 import Sort from "./components/Sort";
+import { generationList } from "./components/GenerationList";
 
-const App:React.FC = () => {
+type Props = {
+  favourite:boolean
+};
+
+const App:React.FC<Props> = (Props) => {
   const [sort, setSort] = useState<boolean>(false);
   const [favourite, setFavourite] = useState<boolean>(false);
   const [storage, setStorage] = useState<IStorage[]>([]);
@@ -19,41 +24,6 @@ const App:React.FC = () => {
   const [filterData, setFilterData] = useState<IStorage[]>();
   const [selected] = useState<Array<number>>([]);
 
-  
-  const [generation] = useState<IGen[]>([
-    {
-      id: 1,
-      range: { from: 0, to: 151 },
-    },
-    {
-      id: 2,
-      range: { from: 152, to: 251 },
-    },
-    {
-      id: 3,
-      range: { from: 252, to: 386 },
-    },
-    {
-      id: 4,
-      range: { from: 387, to: 493 },
-    },
-    {
-      id: 5,
-      range: { from: 494, to: 649 },
-    },
-    {
-      id: 6,
-      range: { from: 650, to: 721 },
-    },
-    {
-      id: 7,
-      range: { from: 722, to: 809 },
-    },
-    {
-      id: 8,
-      range: { from: 810, to: 905 },
-    },
-  ]);
 
   const GET_POKEMON = gql`
     query pokemons($limit: Int, $offset: Int) {
@@ -107,6 +77,7 @@ const App:React.FC = () => {
 
   useEffect((): void => {
     dataJuggle()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favourite]);
 
   const triggerLike = (y: any, heart?: any): void => {
@@ -118,7 +89,7 @@ const App:React.FC = () => {
   };
 
   let placeholder: any;
-  favourite
+  favourite || Props.favourite
     ? (placeholder = storage)
     : search && searchResults
     ? (placeholder = searchResults)
@@ -146,10 +117,10 @@ const App:React.FC = () => {
     if (selected.length) {
       let results: IStorage[];
       results = selected.map((filter: number) =>
-        (favourite ? (placeholder = storage) : placeholder).filter(
+        (favourite || Props.favourite ? (placeholder = storage) : placeholder).filter(
           (poke: IGen) =>
-            poke.id > generation[filter - 1].range.from &&
-            poke.id < generation[filter - 1].range.to
+            poke.id > generationList[filter - 1].range.from &&
+            poke.id < generationList[filter - 1].range.to
         )
       );
       let newresults = results.flat(2);
@@ -184,7 +155,7 @@ const App:React.FC = () => {
           <ul className="appgrid">
             <Search handleSearch={handleSearch} />
 
-            <Generation generation={generation} selected={selected} onChange={onChange} />
+            <Generation generation={generationList} selected={selected} onChange={onChange} />
             
             <Sort handleSort={handleSort} sort={sort} />
 

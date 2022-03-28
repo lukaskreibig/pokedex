@@ -5,7 +5,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  BrowserRouter,
+  Routes
 } from "react-router-dom";
 
 const client = new ApolloClient({
@@ -16,7 +17,12 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App favourite={false} />} />
+      <Route path="favourites" element={<App favourite={true} />} />
+    </Routes>
+  </BrowserRouter>,
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
