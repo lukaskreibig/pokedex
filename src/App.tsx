@@ -15,7 +15,6 @@ const [favourite, setFavourite] = useState<boolean>(false)
 const [storage, setStorage] = useState<any>([])
 const [search, setSearch] = useState<boolean>(false)
 const [searchResults, setSearchResults] = useState<any>([])
-const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
 const [onMouseOver, setOnMouseOver] = useState<boolean>(false);
 const [filter, setFilter] = useState<boolean>(false)
 const [filterData, setFilterData] = useState<any>()
@@ -77,6 +76,8 @@ const [generation] = useState<any>([
   }
 `;
 
+
+
   useEffect(():void => {
     const storage = JSON.parse(localStorage.getItem('storage') || "");
     if (storage) {
@@ -84,10 +85,13 @@ const [generation] = useState<any>([
     }
   }, []);
 
-  useEffect(():void => {
-      localStorage.setItem('storage', JSON.stringify(storage));
-  }, [storage]);
+  useEffect(():void => 
+      localStorage.setItem('storage', JSON.stringify(storage))
+  , [storage]);
 
+  useEffect(():void => {
+    dataJuggle()}
+    , [favourite]);
 
   const triggerLike = (y:any, heart?:any):void => {
     if (!heart)  {
@@ -97,17 +101,16 @@ const [generation] = useState<any>([
     }
   }
 
-  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 1000}} );
-  // (error ? (console.log(`Error! ${error.message}`)) : null)
+  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 905}} );
 
-  let newPokemon:any = null
+  let newPokemon:any
   if (data) {newPokemon = [...data.pokemons.results]}
 
   let placeholder:any
   favourite ? placeholder = storage : search && searchResults ? placeholder = searchResults : placeholder = newPokemon
 
   let handleSearch = (results:any):void => {
-    if(results[0].id !== null){
+    if(results[0].id){
       setSearch(true);
       setSearchResults(results);
     } else {
@@ -120,6 +123,25 @@ const [generation] = useState<any>([
     }
   }
 
+  const dataJuggle = () => {
+
+    if (selected.length) {
+
+      let results:Array<string>
+      results = (selected.map((filter:any) => (
+      (favourite ? placeholder = storage : placeholder).filter((poke:any) => poke.id > generation[filter-1].range.from && poke.id < generation[filter-1].range.to)
+      )))
+      let newresults = results.flat(2);
+      results = newresults
+
+      setFilterData(results)
+      setFilter(true)
+      
+    
+    } else { setFilter(false)}
+  }
+
+
   const onChange = (id:any) => {
     let find = selected.indexOf(id)
 
@@ -128,60 +150,14 @@ const [generation] = useState<any>([
     } else {
       selected.push(id)
     }
-    setSelected(selected)
-    console.log(selected)
     dataJuggle()
   }
 
 
-  
- const dataJuggle = () => {
-
-    if (selected.length) {
-      let from = 0
-      let to = 0
-      let results:Array<string>
-      results = (selected.map((filter:any) => (
-
-      placeholder.filter((poke:any) => poke.id > generation[filter-1].range.from && poke.id < generation[filter-1].range.to)
-      
-      )))
-      let newresults = results.flat(3);
-      results = newresults
-      console.log(results)
-
-      // selected.some((array:any) => array === 1) ? (from = generation[0].range.from, to = generation[0].range.to) : (null)
-      
-      
-      // let filtered = placeholder.filter((poke:any) => poke.id > from && poke.id < to)
-      
-      setFilterData(results)
-      setFilter(true)
-    
-    } else { setFilter(false)}
-  }
-
-    // let yolo2:any = 0
-    // selected.map((number:any) => 
-    //     yolo2 = placeholder.filter((poke:any) => poke.id === number.id,
-    //     console.log("Yolo2", yolo2)) )}
-
-    //  placeholder = generation.map((gen:any) => {
-    //   let pancake = sorted.filter((item: { id:number; }) => {item.id  > gen.range.from && item.id < gen.range.to; console.log("Object names when sorting", item.id, gen.range.from, gen.range.to);});
-    //   finalarray.push(pancake); 
-    //   console.log("the new array the new array", finalarray)
-    //   console.log("Was passiert im pancake?", pancake)
-    //   })
-    //   console.log("DataJuggle has filtered", placeholder)
-
-      
-// useEffect(():void => {
-//   dataJuggle()
-// }, [loading]);
 
   return (
     <div className="app">
-  {loading || loadingSearch ? 'Loading...' : (
+  {loading ? 'Loading...' : (
 <>
   <header> Pokédex </header>
 
@@ -247,4 +223,3 @@ const [generation] = useState<any>([
 }
 
 export default App;
-

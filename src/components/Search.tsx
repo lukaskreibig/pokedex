@@ -25,7 +25,7 @@ query pokemon($name: String!) {
    
         const [searchNow, { loading, data, error }] = useLazyQuery(SEARCH_POKEMON, {
             variables: {
-            name: searchInput
+            name: (searchInput.toLowerCase())
             },
         });
 
