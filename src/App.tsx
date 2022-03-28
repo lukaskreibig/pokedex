@@ -17,6 +17,8 @@ const [search, setSearch] = useState<boolean>(false)
 const [searchResults, setSearchResults] = useState<any>([])
 const [loadingSearch, setLoadingSearch] = useState<boolean>(false)
 const [onMouseOver, setOnMouseOver] = useState<boolean>(false);
+const [filter, setFilter] = useState<boolean>(false)
+const [filterData, setFilterData] = useState<any>()
 const [generation] = useState<any>([
     {
       id: 1,
@@ -95,7 +97,7 @@ const [generation] = useState<any>([
     }
   }
 
-  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 300}} );
+  const { loading, error, data } = useQuery(GET_POKEMON, {variables: {limit: 1000}} );
   // (error ? (console.log(`Error! ${error.message}`)) : null)
 
   let newPokemon:any = null
@@ -118,26 +120,47 @@ const [generation] = useState<any>([
     }
   }
 
-  const onChange = (range:any) => {
-    let find = selected.indexOf(range)
+  const onChange = (id:any) => {
+    let find = selected.indexOf(id)
 
     if(find > -1) {
       selected.splice(find, 1)
     } else {
-      selected.push(range)
+      selected.push(id)
     }
     setSelected(selected)
     console.log(selected)
+    dataJuggle()
   }
 
 
   
-  let finalarray:any = []
+ const dataJuggle = () => {
 
+    if (selected.length) {
+      let from = 0
+      let to = 0
+      let results:Array<string>
+      results = (selected.map((filter:any) => (
 
-  // const dataJuggle = () => {
+      placeholder.filter((poke:any) => poke.id > generation[filter-1].range.from && poke.id < generation[filter-1].range.to)
+      
+      )))
+      let newresults = results.flat(3);
+      results = newresults
+      console.log(results)
 
-    // console.log("DataJugglestarts", placeholder)
+      // selected.some((array:any) => array === 1) ? (from = generation[0].range.from, to = generation[0].range.to) : (null)
+      
+      
+      // let filtered = placeholder.filter((poke:any) => poke.id > from && poke.id < to)
+      
+      setFilterData(results)
+      setFilter(true)
+    
+    } else { setFilter(false)}
+  }
+
     // let yolo2:any = 0
     // selected.map((number:any) => 
     //     yolo2 = placeholder.filter((poke:any) => poke.id === number.id,
@@ -176,8 +199,7 @@ const [generation] = useState<any>([
           return (
           <label key={item.id}>{item.id}
           <input type="checkbox" id="check"
-            onChange={() => onChange(item.range)}
-            selected={selected.includes(item.id)}
+            onChange={() => onChange(item.id)}
           ></input>
           
           </label>
@@ -192,9 +214,8 @@ const [generation] = useState<any>([
 
     <li className={"searchbar"} onClick={() => setSort(!sort)}> {sort ? "Sort from Z-A" : "Sort from A-Z"} </li>
     <li className={"searchbar"} id={favourite ? "searchbar-clicked" : undefined} onClick={() => setFavourite(!favourite)}> Favourites</li>
-  
       {
-        placeholder.sort((a: { name: string; }, b: { name: string; }) => sort ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name))
+        (filter ? filterData : placeholder).sort((a: { name: string; }, b: { name: string; }) => sort ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name))
         // .filter(poke => poke.id === 63)
         .map((x:any, index:number) => { 
          return (
