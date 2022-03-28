@@ -11,7 +11,7 @@ import Sort from "./components/Sort";
 import { generationList } from "./components/GenerationList";
 
 type Props = {
-  favourite:boolean
+  favourite?:boolean
 };
 
 const App:React.FC<Props> = (Props) => {
