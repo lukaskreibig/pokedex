@@ -19,7 +19,7 @@
 
 ## Examples
 
-https://user-image<img width="978" alt="Screenshot 2022-03-29 at 02 10 57" src="https://user-images.githubusercontent.com/78150333/160507546-b82444d7-4660-4873-a79d-b465deaaeec4.png">
+Pokedex Screenshot<img width="978" alt="Screenshot 2022-03-29 at 02 10 57" src="https://user-images.githubusercontent.com/78150333/160507546-b82444d7-4660-4873-a79d-b465deaaeec4.png">
 
 ---
 
