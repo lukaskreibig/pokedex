@@ -50,6 +50,11 @@ input {
   cursor: pointer;
 }
 
+::placeholder {
+  color: black;
+  opacity: 1;
+}
+
 .searchbar:hover {
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
