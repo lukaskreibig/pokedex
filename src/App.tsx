@@ -11,10 +11,10 @@ import Sort from "./components/Sort";
 import { generationList } from "./components/GenerationList";
 
 type Props = {
-  favourite?:boolean
+  favourite?: boolean;
 };
 
-const App:React.FC<Props> = (Props) => {
+const App: React.FC<Props> = (Props) => {
   const [sort, setSort] = useState<boolean>(false);
   const [favourite, setFavourite] = useState<boolean>(false);
   const [storage, setStorage] = useState<IStorage[]>([]);
@@ -23,7 +23,6 @@ const App:React.FC<Props> = (Props) => {
   const [filter, setFilter] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<IStorage[]>();
   const [selected] = useState<Array<number>>([]);
-
 
   const GET_POKEMON = gql`
     query pokemons($limit: Int, $offset: Int) {
@@ -55,13 +54,13 @@ const App:React.FC<Props> = (Props) => {
     newPokemon = [...data.pokemons.results];
   }
 
-  const handleFavourite = ():void => {
-    setFavourite(!favourite)
-  }
+  const handleFavourite = (): void => {
+    setFavourite(!favourite);
+  };
 
-  const handleSort = ():void => {
-    setSort(!sort)
-  }
+  const handleSort = (): void => {
+    setSort(!sort);
+  };
 
   useEffect((): void => {
     const storage = JSON.parse(localStorage.getItem("storage") || "");
@@ -76,8 +75,8 @@ const App:React.FC<Props> = (Props) => {
   );
 
   useEffect((): void => {
-    dataJuggle()
-    }, [favourite]);
+    dataJuggle();
+  }, [favourite]);
 
   const triggerLike = (y: IStorage, heart?: string): void => {
     if (!heart) {
@@ -95,7 +94,7 @@ const App:React.FC<Props> = (Props) => {
     ? (placeholder = searchResults)
     : (placeholder = newPokemon);
 
-  const handleSearch = (results:IStorage[]): void => {
+  const handleSearch = (results: IStorage[]): void => {
     if (results[0].id) {
       setSearchResults(results);
     } else {
@@ -107,17 +106,20 @@ const App:React.FC<Props> = (Props) => {
               "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png",
           },
           notacard: true,
-        }
+        },
       ]);
     }
     setSearch(true);
   };
 
-  const dataJuggle = ():void => {
+  const dataJuggle = (): void => {
     if (selected.length) {
       let results: IStorage[];
       results = selected.map((filter: number) =>
-        (favourite || Props.favourite ? (placeholder = storage) : placeholder).filter(
+        (favourite || Props.favourite
+          ? (placeholder = storage)
+          : placeholder
+        ).filter(
           (poke: IGen) =>
             poke.id > generationList[filter - 1].range.from &&
             poke.id < generationList[filter - 1].range.to
@@ -126,23 +128,23 @@ const App:React.FC<Props> = (Props) => {
       const newresults = results.flat(2);
       results = newresults;
       setFilterData(results);
-      console.log("Results", results)
+      console.log("Results", results);
       setFilter(true);
     } else {
       setFilter(false);
     }
   };
 
-  const onChange = (id:IGen["id"]) => {
-    const find = selected.indexOf(id)
+  const onChange = (id: IGen["id"]) => {
+    const find = selected.indexOf(id);
 
-    if(find > -1) {
-      selected.splice(find, 1)
+    if (find > -1) {
+      selected.splice(find, 1);
     } else {
-      selected.push(id)
+      selected.push(id);
     }
-    dataJuggle()
-  }
+    dataJuggle();
+  };
 
   return (
     <div className="app">
@@ -155,14 +157,21 @@ const App:React.FC<Props> = (Props) => {
           <ul className="appgrid">
             <Search handleSearch={handleSearch} />
 
-            <Generation generation={generationList} selected={selected} onChange={onChange} />
-            
+            <Generation
+              generation={generationList}
+              selected={selected}
+              onChange={onChange}
+            />
+
             <Sort handleSort={handleSort} sort={sort} />
 
-            <Favourite handleFavourite={() => handleFavourite()} favourite={favourite} />
+            <Favourite
+              handleFavourite={() => handleFavourite()}
+              favourite={favourite}
+            />
 
             {(filter ? filterData : placeholder)
-              .sort((a:IStorage, b:IStorage) =>
+              .sort((a: IStorage, b: IStorage) =>
                 sort
                   ? b.name.localeCompare(a.name)
                   : a.name.localeCompare(b.name)
@@ -176,8 +185,7 @@ const App:React.FC<Props> = (Props) => {
                         src={x.artwork ? x.artwork : x.sprites?.front_default}
                         alt="Pokemon"
                       />
-                      {storage.filter((obj) => obj.id === x.id)
-                        .length ? (
+                      {storage.filter((obj) => obj.id === x.id).length ? (
                         <img
                           src={heart}
                           className={"like"}
@@ -205,6 +213,6 @@ const App:React.FC<Props> = (Props) => {
       )}
     </div>
   );
-}
+};
 
 export default App;

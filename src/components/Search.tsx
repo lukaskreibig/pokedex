@@ -3,9 +3,8 @@ import "../App.scss";
 import { gql, useLazyQuery } from "@apollo/client";
 import { IStorage } from "../interfaces";
 
-
 type Props = {
-  handleSearch: (results:IStorage[]) => void;
+  handleSearch: (results: IStorage[]) => void;
 };
 
 const Search: React.FC<Props> = (Props) => {
@@ -30,7 +29,7 @@ const Search: React.FC<Props> = (Props) => {
     },
   });
 
-  const activateSearch = (e:React.FormEvent<HTMLFormElement>): void => {
+  const activateSearch = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     searchNow().then((data) => {
       Props.handleSearch([data.data.pokemon]);
