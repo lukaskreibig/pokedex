@@ -1,6 +1,6 @@
 # Pokedex
 
-**Pokedex** is a  **Pokemon Database App** for browser built with **React** / Node and GraphQL using JS / Typescript, SCSS and Local Storage. You can search for Pokemons and save your favourites locally. They will be remembered after you restart the Browser (LocalStorage). It's also possible to filter them by Generation and to sort them by name. You can also access your favourites by using the /favourites Route.
+**Pokedex** is a  **Pokemon Database App** for browser built with **React** / Node and GraphQL using JS / Typescript, SCSS and Local Storage. You can search for Pokemons and save your favourites locally. They will be remembered after you restart the Browser (LocalStorage). It's also possible to filter them by Generation and to sort them by name. You can access your favourites by using the /favourites Route.
 
 
 ---
