@@ -1,12 +1,12 @@
       export interface IStorage {
-        artwork?: URL;
+        artwork?: string;
         id?: number;
         image?: URL;
         name: string;
         url?: URL;
         __typename?: string;
         sprites?: {
-        front_default?: string | URL | undefined;
+        front_default?: string;
     } | undefined;
         notacard?: boolean;
     }

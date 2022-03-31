@@ -102,8 +102,7 @@ const App: React.FC<Props> = (Props) => {
         {
           name: "Nope. No Pokemon Found.",
           sprites: {
-            front_default:
-              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png",
+            front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png",
           },
           notacard: true,
         },
