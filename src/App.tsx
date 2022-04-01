@@ -151,6 +151,7 @@ const App: React.FC<Props> = (Props) => {
       results = newresults;
       setFilterData(results);
       console.log("Results", results);
+      setCurrentPage(1);
       setFilter(true);
     } else {
       setFilter(false);
