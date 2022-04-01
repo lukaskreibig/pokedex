@@ -70,6 +70,7 @@ const App: React.FC<Props> = (Props) => {
   // Handle Filter States from Components
   const handleFavourite = (): void => {
     setFavourite(!favourite);
+    setCurrentPage(1);
   };
 
   // Handle Sorting
