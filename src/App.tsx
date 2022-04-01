@@ -170,9 +170,9 @@ const App: React.FC<Props> = (Props) => {
 
   // Handle Pagination Mechanic & Sort Data from A-Z or Z-A
   let currentPosts;
-  const paginate = (paginateNumber:number) => {
-    setCurrentPage(paginateNumber)
-  }
+  const paginate = (paginateNumber: number) => {
+    setCurrentPage(paginateNumber);
+  };
   if (!loading) {
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -241,7 +241,11 @@ const App: React.FC<Props> = (Props) => {
             })}
           </ul>
 
-          <Pagination postsPerPage={postsPerPage} totalPosts={(filter ? filterData?.length : placeholder.length)} paginate={paginate} />
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={filter ? filterData?.length : placeholder.length}
+            paginate={paginate}
+          />
         </>
       )}
     </div>
