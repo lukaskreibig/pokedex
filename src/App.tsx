@@ -34,7 +34,7 @@ const App: React.FC<Props> = (Props) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(16);
 
-  // Get All Pokemons from API
+  // Get All Pokemons from API GraphQL definition
   const GET_POKEMON = gql`
     query pokemons($limit: Int, $offset: Int) {
       pokemons(limit: $limit, offset: $offset) {
@@ -56,10 +56,12 @@ const App: React.FC<Props> = (Props) => {
     }
   `;
 
+  // Run GraphQL Query
   const { loading, data } = useQuery(GET_POKEMON, {
     variables: { limit: 905 },
   });
 
+  // Store API Data
   let newPokemon: IStorage[] | undefined;
   if (data) {
     newPokemon = [...data.pokemons.results];
@@ -70,6 +72,7 @@ const App: React.FC<Props> = (Props) => {
     setFavourite(!favourite);
   };
 
+  // Handle Sorting
   const handleSort = (): void => {
     setSort(!sort);
   };
@@ -237,7 +240,7 @@ const App: React.FC<Props> = (Props) => {
               );
             })}
           </ul>
-          
+
           <Pagination postsPerPage={postsPerPage} totalPosts={(filter ? filterData?.length : placeholder.length)} paginate={paginate} />
         </>
       )}
