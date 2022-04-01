@@ -1,4 +1,4 @@
-      export interface IStorage {
+      export interface IStorage { 
         artwork?: string;
         id?: number;
         image?: URL;

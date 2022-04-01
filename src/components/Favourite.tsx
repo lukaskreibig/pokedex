@@ -11,7 +11,7 @@ const Favourite: React.FC<Props> = ({ handleFavourite, favourite }) => {
   return (
     <li
       className={"searchbar"}
-      id={favourite ? "searchbar-clicked" : undefined}
+      id={favourite ? "favourite-clicked" : undefined}
       onClick={() => handleFavourite()}
     >
       Favourites

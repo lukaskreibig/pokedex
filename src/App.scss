@@ -63,14 +63,13 @@ input {
   transition: background-color 0.2s;
 }
 
-// #searchbar-clicked {
-//   background-color: rgba(255, 198, 100, 0.979);
-//   transition: background-color 0.2s;
-// }
-
 .searchbar:active {
   background: #72aafd;
   top: 2px;
+}
+
+#favourite-clicked {
+  background-color: rgba(255, 198, 100, 0.979);
 }
 
 .filterheader {
@@ -153,6 +152,29 @@ ul {
 li {
   list-style-type: none;
   text-align: center;
+}
+
+nav {
+  width: 65%;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: center;
+}
+
+.paginationNumber {
+  font-size: 18px;
+  margin: 3px;
+  padding: 5px;
+}
+
+.paginationNumber:hover {
+  font-family: 'Pokemon Solid', sans-serif;
+  cursor: pointer;
 }
 
 @keyframes shake {
