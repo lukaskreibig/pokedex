@@ -17,7 +17,6 @@ ReactDOM.render(
           <Route path="favourites" element={<App favourite={true} />} />
         </Routes>
       </BrowserRouter>
-      ,
     </ApolloProvider>,
   document.getElementById("root")
 );

@@ -32,7 +32,7 @@ const Pagination: React.FC<Props> = ({
         ))}
       </ul>
     </nav>
-  ) : null;
+  ) : (null)
 };
 
 export default Pagination;
