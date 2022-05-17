@@ -89,9 +89,11 @@ const App: React.FC<Props> = (Props) => {
 
   // Get Favourites from Local Storage
   useEffect((): void => {
-    const storage = JSON.parse(localStorage.getItem("storage") || "");
-    if (storage) {
-      setStorage(storage);
+    if(localStorage.length){
+      const storage = JSON.parse(localStorage.getItem("storage") || "");
+      if (storage) {
+        setStorage(storage);
+      }
     }
   }, []);
 
