@@ -88,20 +88,21 @@ const App: React.FC<Props> = (Props) => {
   };
 
   // Get Favourites from Local Storage
+   
   useEffect((): void => {
     if(localStorage.length){
       const storage = JSON.parse(localStorage.getItem("storage") || "");
-      if (storage) {
         setStorage(storage);
-      }
     }
-  }, []);
+  }, [])
 
   // Save Favourites in Local Storage
   useEffect(
     (): void => localStorage.setItem("storage", JSON.stringify(storage)),
     [storage]
   );
+
+  console.log(storage)
 
   useEffect((): void => {
     dataJuggle();
